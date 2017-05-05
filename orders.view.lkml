@@ -18,7 +18,7 @@ view: orders {
         , Taxes
         , Total
       FROM ecodiva.orders
-      WHERE Total <> ''
+      WHERE Total <> '' AND Email <> ''
        ;;
     indexes: ["Id", "name"]
     sql_trigger_value: SELECT 1 ;;
@@ -43,8 +43,8 @@ view: orders {
   }
 
   dimension: accepts_marketing {
-    type: string
-    sql: ${TABLE}."Accepts Marketing" ;;
+    type: yesno
+    sql: ${TABLE}."Accepts Marketing" = 'yes';;
   }
 
   dimension_group: cancelled {
@@ -73,6 +73,16 @@ view: orders {
       year
     ]
     sql: ${TABLE}."Created at" ;;
+  }
+
+  measure: first_order {
+    type: date
+    sql: MIN(${TABLE}."Created at") ;;
+  }
+
+  measure: last_order {
+    type: date
+    sql: MAX(${TABLE}."Created at") ;;
   }
 
   dimension: currency {
@@ -139,17 +149,12 @@ view: orders {
     type: sum
     sql: ${TABLE}.Subtotal ;;
     value_format: "$#,##0.00"
+    drill_fields: [detail*]
   }
 
   measure: taxes {
     type: sum
     sql: ${TABLE}.Taxes ;;
-    value_format: "$#,##0.00"
-  }
-
-  measure: total {
-    type: sum
-    sql: ${TABLE}.Total ;;
     value_format: "$#,##0.00"
   }
 
@@ -161,6 +166,13 @@ view: orders {
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [
+      email,
+      order,
+      created_date,
+      currency,
+      status,
+      discount_code,
+      subtotal
     ]
   }
 }
