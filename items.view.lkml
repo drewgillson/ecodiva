@@ -55,6 +55,12 @@ view: items {
     drill_fields: [items*]
   }
 
+  measure: average_ticket {
+    type: average
+    sql: ${TABLE}.price ;;
+    value_format: "$#,##0.00"
+  }
+
   measure: quantity_total {
     type: sum
     sql: ${TABLE}.quantity ;;
