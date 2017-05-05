@@ -93,6 +93,12 @@ view: items {
     sql: ${TABLE}.vendor ;;
   }
 
+  measure: count {
+    type: count_distinct
+    sql: ${product_name} ;;
+    drill_fields: [items*]
+  }
+
   # ----- Sets of fields for drilling ------
   set: items {
     fields: [
