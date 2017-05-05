@@ -20,7 +20,7 @@ explore: items {
   }
 
   join: words {
-    sql_on: ${items.product_name} LIKE '%' + ${words.word} + '%' ;;
+    sql_on: ${items.product_name} LIKE '% ' + ${words.word} + '%' OR LIKE ${words.word} + ' %';;
     relationship: many_to_one
   }
 }
