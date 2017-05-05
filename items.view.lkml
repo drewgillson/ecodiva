@@ -52,12 +52,14 @@ view: items {
     type: sum
     sql: ${TABLE}.price ;;
     value_format: "$#,##0.00"
+    drill_fields: [items*]
   }
 
   measure: quantity_total {
     type: sum
     sql: ${TABLE}.quantity ;;
     value_format: "#,##0"
+    drill_fields: [items*]
   }
 
   dimension: requires_shipping {
@@ -86,9 +88,12 @@ view: items {
   }
 
   # ----- Sets of fields for drilling ------
-  set: detail {
+  set: items {
     fields: [
-      id,
+      product_name,
+      sku,
+      sales_total,
+      quantity_total
     ]
   }
 }
